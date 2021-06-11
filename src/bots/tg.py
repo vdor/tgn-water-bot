@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, types
+from aiogram.types import ChatMemberStatus
 
 from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
@@ -21,9 +22,9 @@ class TelegramBot:
             await bot.close()
 
     async def chat_member_handler(self, event: types.ChatMemberUpdated):
-        old_member = event.old_chat_member
-        new_member = event.new_chat_member
-        if old_member.status == types.ChatMemberStatus.MEMBER and new_member.status != types.ChatMemberStatus.MEMBER:
-            await self._chats_repo.remove_chat(str(event.chat.id))
-        elif old_member.status != types.ChatMemberStatus.MEMBER and new_member.status == types.ChatMemberStatus.MEMBER:
+        new_status = event.new_chat_member.status
+
+        if ChatMemberStatus.is_chat_member(new_status):
             await self._chats_repo.add_chat(str(event.chat.id))
+        else:
+            await self._chats_repo.remove_chat(str(event.chat.id))

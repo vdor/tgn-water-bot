@@ -1,10 +1,16 @@
 import asyncio
+import json
 
 import firebase_admin
 from firebase_admin import db
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from src.env import TELEGRAM_BOT_TOKEN, FIREBASE_ADMIN_CERT, FIREBASE_DB_URI, URI_WATER_ISSUES_SOURCE_HTML
+from env import (
+    TELEGRAM_BOT_TOKEN,
+    FIREBASE_ADMIN_SECRET_JSON_CONTENT,
+    FIREBASE_DB_URI,
+    URI_WATER_ISSUES_SOURCE_HTML,
+)
 from src.bots.tg import TelegramBot
 from src.issue_sender.telegram import IssueSenderTelegram
 from src.issues_collector import IssuesCollector
@@ -14,7 +20,7 @@ from src.issues_repository.firebase import IssuesRepositoryFirebase
 from src.telegram_chat_ids_repository.firebase import TelegramChatIdsRepositoryFirebase
 
 if __name__ == "__main__":
-    cred = firebase_admin.credentials.Certificate(FIREBASE_ADMIN_CERT)
+    cred = firebase_admin.credentials.Certificate(json.loads(FIREBASE_ADMIN_SECRET_JSON_CONTENT))
     firebase_admin.initialize_app(cred, {
         'databaseURL': FIREBASE_DB_URI,
     })

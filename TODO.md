@@ -1,3 +1,2 @@
 - Add logging
 - Tests
-- requirements.txt

@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import ChatMemberStatus
+from aiogram.types import ChatMemberStatus, AllowedUpdates
 
 from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
@@ -17,8 +17,8 @@ class TelegramBot:
         try:
             dispatcher = Dispatcher(bot=bot)
             dispatcher.register_my_chat_member_handler(self.chat_member_handler)
-            dispatcher.register_message_handler(self.start_message_handler, commands=['start'])
-            await dispatcher.start_polling()
+            dispatcher.register_message_handler(self.start_message_handler)
+            await dispatcher.start_polling(allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER)
         finally:
             await bot.close()
 

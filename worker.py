@@ -38,8 +38,8 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     scheduler = AsyncIOScheduler({'event_loop': loop})
 
-    scheduler.add_job(issues_collector.collect, 'interval', minutes=.1)
-    scheduler.add_job(issue_sender.send, 'interval', minutes=.2)
+    scheduler.add_job(issues_collector.collect, 'interval', minutes=30)
+    scheduler.add_job(issue_sender.send, 'interval', minutes=32)
     scheduler.start()
 
     try:

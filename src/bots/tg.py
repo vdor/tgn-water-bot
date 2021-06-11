@@ -17,6 +17,7 @@ class TelegramBot:
         try:
             dispatcher = Dispatcher(bot=bot)
             dispatcher.register_my_chat_member_handler(self.chat_member_handler)
+            dispatcher.register_message_handler(self.start_message_handler, commands=['start'])
             await dispatcher.start_polling()
         finally:
             await bot.close()
@@ -28,3 +29,6 @@ class TelegramBot:
             await self._chats_repo.add_chat(str(event.chat.id))
         else:
             await self._chats_repo.remove_chat(str(event.chat.id))
+
+    async def start_message_handler(self, message: types.Message):
+        await self._chats_repo.add_chat(str(message.chat.id))

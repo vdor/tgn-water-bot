@@ -40,6 +40,9 @@ class TelegramBot:
         chat_id = str(message.chat.id)
         logger.info('got a start command in the chat "{%s}"', chat_id)
 
-        if not self._chats_repo.is_chat_id_subscribed(chat_id):
+        is_subscribed = await self._chats_repo.is_chat_id_subscribed(chat_id)
+        if not is_subscribed:
             await self._chats_repo.add_chat(chat_id)
-            await message.reply("Готово! Сообщу о проблемах с водой в городе 👌")
+            await message.answer("Готово! Сообщу о проблемах с водой в городе 👌")
+        else:
+            await message.answer("Когда будут проблемы - сообщу!")

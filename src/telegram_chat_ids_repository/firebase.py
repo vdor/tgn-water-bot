@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from firebase_admin.db import Reference
 
@@ -34,4 +34,9 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
         self._active_chat_ids_ref.child(chat_id).set({'active': False})
 
     async def is_chat_id_subscribed(self, chat_id: str) -> bool:
-        return self._active_chat_ids_ref.child(chat_id).get() is not None
+        data: Optional[dict] = self._active_chat_ids_ref.child(chat_id).get()
+
+        if data is None:
+            return False
+
+        return data.get('active', False)

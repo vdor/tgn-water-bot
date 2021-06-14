@@ -14,3 +14,7 @@ class TelegramChatIdsRepositoryABC(abc.ABC):
     @abc.abstractmethod
     async def remove_chat(self, chat_id: str):
         raise NotImplementedError
+
+    @abc.abstractmethod
+    async def is_chat_id_subscribed(self, chat_id: str) -> bool:
+        raise NotImplementedError

@@ -37,5 +37,9 @@ class TelegramBot:
             await self._chats_repo.remove_chat(str(event.chat.id))
 
     async def start_message_handler(self, message: types.Message):
-        logger.info('got a start command in the chat "{%s}"', message.chat.id)
-        await self._chats_repo.add_chat(str(message.chat.id))
+        chat_id = str(message.chat.id)
+        logger.info('got a start command in the chat "{%s}"', chat_id)
+
+        if not self._chats_repo.is_chat_id_subscribed(chat_id):
+            await self._chats_repo.add_chat(chat_id)
+            await message.reply("Готово! Сообщу о проблемах с водой в городе 👌")

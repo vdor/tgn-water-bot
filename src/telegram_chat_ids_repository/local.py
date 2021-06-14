@@ -26,3 +26,8 @@ class TelegramChatIdsRepositoryLocal(TelegramChatIdsRepositoryABC):
     def set_chats(self, chat_ids: List[str]):
         with open(self._filename, 'w') as f:
             f.write(",".join(chat_ids))
+
+    async def is_chat_id_subscribed(self, chat_id: str) -> bool:
+        with open(self._filename, 'r') as f:
+            ids = f.readline().split(',')
+            return chat_id in ids

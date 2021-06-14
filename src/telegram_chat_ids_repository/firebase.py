@@ -32,3 +32,6 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
 
     async def remove_chat(self, chat_id: str):
         self._active_chat_ids_ref.child(chat_id).set({'active': False})
+
+    async def is_chat_id_subscribed(self, chat_id: str) -> bool:
+        return self._active_chat_ids_ref.child(chat_id).get() is not None

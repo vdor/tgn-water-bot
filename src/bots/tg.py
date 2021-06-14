@@ -22,7 +22,8 @@ class TelegramBot:
             dispatcher = Dispatcher(bot=bot)
             dispatcher.register_my_chat_member_handler(self.chat_member_handler)
             dispatcher.register_message_handler(self.start_message_handler, commands='start')
-            await dispatcher.start_polling(allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER)
+            await dispatcher.start_polling(allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
+                                           relax=5)
         finally:
             await bot.close()
 

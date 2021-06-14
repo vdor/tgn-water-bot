@@ -1,3 +1,4 @@
+from env import LOG_LEVEL
 
 LOGGING_CONFIG = {
     'version': 1,
@@ -15,7 +16,7 @@ LOGGING_CONFIG = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',
+        'level': LOG_LEVEL,
         'propagate': False,
     }
 }

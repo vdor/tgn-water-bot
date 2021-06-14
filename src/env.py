@@ -1,10 +1,12 @@
 import environ
 
 env = environ.Env()
-environ.Env.read_env()
+env.read_env()
 
 TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
 URI_WATER_ISSUES_SOURCE_HTML = env.str('URI_WATER_ISSUES_SOURCE_HTML')
 
 FIREBASE_ADMIN_SECRET_JSON_CONTENT = env.str('FIREBASE_ADMIN_SECRET_JSON_CONTENT')
 FIREBASE_DB_URI = env.str('FIREBASE_DB_URI')
+
+LOG_LEVEL = env.str('LOG_LEVEL', 'INFO')

@@ -1,7 +1,11 @@
+import logging
+
 import aiohttp
 
 from .base import IssuesHTMLRepositoryABC
 from .exceptions import LoadingHTMLIssuesException
+
+logger = logging.getLogger(__name__)
 
 
 class IssuesHTMLRepositoryHTTP(IssuesHTMLRepositoryABC):
@@ -14,5 +18,6 @@ class IssuesHTMLRepositoryHTTP(IssuesHTMLRepositoryABC):
         async with aiohttp.ClientSession() as session:
             async with session.get(self._uri) as resp:
                 if resp.status != 200:
+                    logger.error("can't get HTML, because response status is {status}", status=resp.status)
                     raise LoadingHTMLIssuesException
                 return await resp.text()

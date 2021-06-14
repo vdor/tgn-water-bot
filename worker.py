@@ -1,16 +1,21 @@
-import asyncio
 import json
+import asyncio
+import logging
 
 import firebase_admin
+
+from logging import config as logging_config
+
 from firebase_admin import db
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from env import (
+from src.env import (
     TELEGRAM_BOT_TOKEN,
     FIREBASE_ADMIN_SECRET_JSON_CONTENT,
     FIREBASE_DB_URI,
     URI_WATER_ISSUES_SOURCE_HTML,
 )
+from src.logging import LOGGING_CONFIG
 from src.bots.tg import TelegramBot
 from src.issue_sender.telegram import IssueSenderTelegram
 from src.issues_collector import IssuesCollector
@@ -19,7 +24,10 @@ from src.issues_parser.html import IssuesParserHTML
 from src.issues_repository.firebase import IssuesRepositoryFirebase
 from src.telegram_chat_ids_repository.firebase import TelegramChatIdsRepositoryFirebase
 
+logger = logging.getLogger(__name__)
+
 if __name__ == "__main__":
+    logging_config.dictConfig(LOGGING_CONFIG)
     cred = firebase_admin.credentials.Certificate(json.loads(FIREBASE_ADMIN_SECRET_JSON_CONTENT))
     firebase_admin.initialize_app(cred, {
         'databaseURL': FIREBASE_DB_URI,
@@ -40,9 +48,13 @@ if __name__ == "__main__":
 
     scheduler.add_job(issues_collector.collect, 'interval', minutes=30)
     scheduler.add_job(issue_sender.send, 'interval', minutes=32)
+
+    logger.info("starting scheduler")
     scheduler.start()
 
     try:
+        logger.info("starting telegram bot")
         loop.run_until_complete(tg_bot.start())
     except (KeyboardInterrupt, SystemExit):
-        pass
+        scheduler.shutdown()
+        logger.info('stopping')

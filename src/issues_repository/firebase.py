@@ -1,9 +1,12 @@
+import logging
 from typing import List
 
 from firebase_admin.db import Reference
 
 from src.domain.water_issue import WaterIssue
 from src.issues_repository.base import IssuesRepositoryABC
+
+logger = logging.getLogger(__name__)
 
 
 class IssuesRepositoryFirebase(IssuesRepositoryABC):
@@ -40,4 +43,5 @@ class IssuesRepositoryFirebase(IssuesRepositoryABC):
         for issue in issues:
             issue_ref = self._issues_ref.child(issue.hash)
             if issue_ref.get() is None:
+                logger.info('adding new issue with hash "{%s}"', issue.hash)
                 issue_ref.set(issue.asdict)

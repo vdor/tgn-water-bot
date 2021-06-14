@@ -16,6 +16,6 @@ LOGGING_CONFIG = {
     'root': {
         'handlers': ['console'],
         'level': 'DEBUG',
-        'propagate': True,
+        'propagate': False,
     }
 }

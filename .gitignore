@@ -32,3 +32,4 @@ venv.bak/
 
 # Mypy
 .mypy_cache/
+.pytest_cache/

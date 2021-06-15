@@ -1,2 +1,2 @@
 isort .
-black .
+black . --target-version=py39

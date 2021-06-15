@@ -34,9 +34,9 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
         self._active_chat_ids_ref.child(chat_id).set({"active": False})
 
     async def is_chat_id_subscribed(self, chat_id: str) -> bool:
-        data: Optional[dict] = self._active_chat_ids_ref.child(chat_id).get()
+        data = self._active_chat_ids_ref.child(chat_id).get()
 
-        if data is None:
-            return False
+        if isinstance(data, dict):
+            return data.get("active", False)
 
-        return data.get("active", False)
+        return False

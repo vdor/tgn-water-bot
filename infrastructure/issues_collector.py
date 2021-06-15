@@ -18,4 +18,5 @@ class IssuesCollector:
         logger.info("parsing issues")
         issues = await self.parser.parse()
         logger.info("saving issues")
-        await self.repo.try_add_issues(issues)
+        allowed_issues = [issue for issue in issues if not issue.is_empty]
+        await self.repo.try_add_issues(allowed_issues)

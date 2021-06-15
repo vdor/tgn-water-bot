@@ -28,3 +28,7 @@ class WaterIssue:
     @property
     def asdict(self) -> dict:
         return asdict(self)
+
+    @property
+    def is_empty(self) -> bool:
+        return len(self.content.strip()) == 0

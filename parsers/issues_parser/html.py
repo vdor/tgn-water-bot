@@ -11,7 +11,7 @@ from .base import IssuesParserABC
 
 class IssuesParserHTML(IssuesParserABC):
     _issues_html_repository: IssuesHTMLRepositoryABC
-    _parse_issue_regexp: re.Pattern = re.compile(r"(^\d\d?\.\d\d?.\d\d\d?\d?)(.*)")
+    _parse_issue_regexp: re.Pattern = re.compile(r"(\d\d?\.\d\d?.\d\d\d?\d?)(.*)")
 
     def __init__(self, repo: IssuesHTMLRepositoryABC):
         self._issues_html_repository = repo
@@ -20,11 +20,11 @@ class IssuesParserHTML(IssuesParserABC):
         html = await self._issues_html_repository.get_html_content()
         bs = BeautifulSoup(html, "html.parser")
         issues = bs.select("tr")
-
         result: List[WaterIssue] = []
 
         for issue in issues:
-            match = self._parse_issue_regexp.match(issue.text)
+            text = issue.text.strip("\n")
+            match = self._parse_issue_regexp.match(text)
 
             if match is None:
                 continue

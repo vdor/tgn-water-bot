@@ -4,6 +4,7 @@ import logging
 from logging import config as logging_config
 
 import firebase_admin
+from aiogram import Bot, Dispatcher
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from firebase_admin import db
 
@@ -46,9 +47,11 @@ if __name__ == "__main__":
 
     issues_collector = IssuesCollector(parser=issues_html_parser, repo=issues_repo)
     issue_sender = IssueSenderTelegram(
-        bot_token=TELEGRAM_BOT_TOKEN, chats_repo=chats_repo, issue_repo=issues_repo
+        bot=Bot(token=TELEGRAM_BOT_TOKEN), chats_repo=chats_repo, issue_repo=issues_repo
     )
-    tg_bot = TelegramBot(token=TELEGRAM_BOT_TOKEN, chats_repo=chats_repo)
+    tg_bot = TelegramBot(
+        dispatcher=Dispatcher(bot=Bot(TELEGRAM_BOT_TOKEN)), chats_repo=chats_repo
+    )
 
     loop = asyncio.get_event_loop()
     scheduler = AsyncIOScheduler({"event_loop": loop})
@@ -61,7 +64,7 @@ if __name__ == "__main__":
 
     try:
         logger.info("starting telegram bot")
-        # loop.run_until_complete(tg_bot.start())
+        loop.run_until_complete(tg_bot.start())
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
         logger.info("stopping")

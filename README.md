@@ -11,8 +11,3 @@ Telegram [channel](https://t.me/tgnwater) with the bot
 ### Usage
 
 Send `/start` message to the bot, use it as administrator in your channel or add to a group
-
-## TODO
-
-- Add mypy
-- Create tests

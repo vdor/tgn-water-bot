@@ -13,25 +13,25 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
 
     @property
     def _telegram_ref(self):
-        return self._reference.child('telegram')
+        return self._reference.child("telegram")
 
     @property
     def _active_chat_ids_ref(self):
-        return self._telegram_ref.child('active_chat_ids')
+        return self._telegram_ref.child("active_chat_ids")
 
     async def get_all_chats(self) -> List[str]:
-        ids = self._active_chat_ids_ref.order_by_child('active').equal_to(True).get()
+        ids = self._active_chat_ids_ref.order_by_child("active").equal_to(True).get()
 
         if ids is None:
             return []
 
-        return ids # noqa
+        return ids  # noqa
 
     async def add_chat(self, chat_id: str):
-        self._active_chat_ids_ref.child(chat_id).set({'active': True})
+        self._active_chat_ids_ref.child(chat_id).set({"active": True})
 
     async def remove_chat(self, chat_id: str):
-        self._active_chat_ids_ref.child(chat_id).set({'active': False})
+        self._active_chat_ids_ref.child(chat_id).set({"active": False})
 
     async def is_chat_id_subscribed(self, chat_id: str) -> bool:
         data: Optional[dict] = self._active_chat_ids_ref.child(chat_id).get()
@@ -39,4 +39,4 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
         if data is None:
             return False
 
-        return data.get('active', False)
+        return data.get("active", False)

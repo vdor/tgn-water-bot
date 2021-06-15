@@ -17,15 +17,17 @@ class IssuesRepositoryFirebase(IssuesRepositoryABC):
 
     @property
     def _issues_ref(self):
-        return self._reference.child('issues')
+        return self._reference.child("issues")
 
     async def get_unsent_tg_issues(self) -> List[WaterIssue]:
-        issues = self._issues_ref.order_by_child('is_sent_telegram').equal_to(False).get()
+        issues = (
+            self._issues_ref.order_by_child("is_sent_telegram").equal_to(False).get()
+        )
 
         result = []
 
-        if hasattr(issues, 'values'):
-            for issue in issues.values(): # noqa
+        if hasattr(issues, "values"):
+            for issue in issues.values():  # noqa
                 result.append(WaterIssue.create_from_dict(issue))
 
         return result
@@ -34,7 +36,7 @@ class IssuesRepositoryFirebase(IssuesRepositoryABC):
         payload = {}
 
         for h in issue_hashes:
-            payload[f'{h}/is_sent_telegram'] = True
+            payload[f"{h}/is_sent_telegram"] = True
 
         if payload:
             self._issues_ref.update(payload)

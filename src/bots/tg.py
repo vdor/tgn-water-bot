@@ -1,7 +1,7 @@
 import logging
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import ChatMemberStatus, AllowedUpdates
+from aiogram.types import AllowedUpdates, ChatMemberStatus
 
 from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
@@ -21,15 +21,23 @@ class TelegramBot:
         try:
             dispatcher = Dispatcher(bot=bot)
             dispatcher.register_my_chat_member_handler(self.chat_member_handler)
-            dispatcher.register_message_handler(self.start_message_handler, commands='start')
-            await dispatcher.start_polling(allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
-                                           relax=5)
+            dispatcher.register_message_handler(
+                self.start_message_handler, commands="start"
+            )
+            await dispatcher.start_polling(
+                allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
+                relax=5,
+            )
         finally:
             await bot.close()
 
     async def chat_member_handler(self, event: types.ChatMemberUpdated):
         new_status = event.new_chat_member.status
-        logger.info('chat member status changed to "{%s}" in the chat "{%s}"', new_status, event.chat.id)
+        logger.info(
+            'chat member status changed to "{%s}" in the chat "{%s}"',
+            new_status,
+            event.chat.id,
+        )
 
         if ChatMemberStatus.is_chat_member(new_status):
             await self._chats_repo.add_chat(str(event.chat.id))

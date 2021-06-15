@@ -8,4 +8,3 @@ class IssuesParserABC(abc.ABC):
     @abc.abstractmethod
     async def parse(self) -> List[WaterIssue]:
         raise NotImplementedError
-

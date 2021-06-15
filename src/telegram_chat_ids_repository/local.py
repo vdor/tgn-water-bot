@@ -10,13 +10,13 @@ class TelegramChatIdsRepositoryLocal(TelegramChatIdsRepositoryABC):
         self._filename = filename
 
     async def get_all_chats(self) -> List[str]:
-        with open(self._filename, 'r') as f:
+        with open(self._filename, "r") as f:
             line = f.readline()
-            return line.split(',')
+            return line.split(",")
 
     async def add_chat(self, chat_id: str):
-        with open(self._filename, 'a') as f:
-            f.write(f'{chat_id},')
+        with open(self._filename, "a") as f:
+            f.write(f"{chat_id},")
 
     async def remove_chat(self, chat_id: str):
         chats = await self.get_all_chats()
@@ -24,10 +24,10 @@ class TelegramChatIdsRepositoryLocal(TelegramChatIdsRepositoryABC):
         self.set_chats(list(filtered))
 
     def set_chats(self, chat_ids: List[str]):
-        with open(self._filename, 'w') as f:
+        with open(self._filename, "w") as f:
             f.write(",".join(chat_ids))
 
     async def is_chat_id_subscribed(self, chat_id: str) -> bool:
-        with open(self._filename, 'r') as f:
-            ids = f.readline().split(',')
+        with open(self._filename, "r") as f:
+            ids = f.readline().split(",")
             return chat_id in ids

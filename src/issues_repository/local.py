@@ -1,11 +1,11 @@
-import json
 import itertools
-from typing import List, Iterable
+import json
 from collections.abc import Iterable as IterableABC
+from typing import Iterable, List
 
-from .base import IssuesRepositoryABC
 from ..domain.water_issue import WaterIssue
 from ..packages.json_encoders import DataClassJSONEncoder
+from .base import IssuesRepositoryABC
 
 
 class IssuesRepositoryLocal(IssuesRepositoryABC):
@@ -14,7 +14,7 @@ class IssuesRepositoryLocal(IssuesRepositoryABC):
     def __init__(self, file_path: str):
         self._file_path = file_path
 
-    async def get_unsent_tg_issues(self) -> Iterable[WaterIssue]:
+    async def get_unsent_tg_issues(self) -> List[WaterIssue]:
         result = []
 
         for issue in self._get_stored_issues():
@@ -36,7 +36,9 @@ class IssuesRepositoryLocal(IssuesRepositoryABC):
 
     async def try_add_issues(self, issues: List[WaterIssue]):
         stored_issues_map = self._get_hash_map_issues()
-        issues_to_add = filter(lambda issue: issue.hash not in stored_issues_map, issues)
+        issues_to_add = filter(
+            lambda issue: issue.hash not in stored_issues_map, issues
+        )
         self._set_issues(itertools.chain(stored_issues_map.values(), issues_to_add))
 
     def _get_hash_map_issues(self):
@@ -48,7 +50,7 @@ class IssuesRepositoryLocal(IssuesRepositoryABC):
         return hash_map
 
     def _get_stored_issues(self) -> Iterable[WaterIssue]:
-        with open(self._file_path, 'r') as f:
+        with open(self._file_path, "r") as f:
             content = "\n".join(f.readlines())
             try:
                 issues_json = json.loads(content)
@@ -59,6 +61,6 @@ class IssuesRepositoryLocal(IssuesRepositoryABC):
                 pass
 
     def _set_issues(self, issues: Iterable[WaterIssue]):
-        with open(self._file_path, 'w') as f:
+        with open(self._file_path, "w") as f:
             issues_list = list(issues)
             f.write(json.dumps(issues_list, cls=DataClassJSONEncoder))

@@ -4,3 +4,8 @@ aiohttp==3.7.4.post0
 beautifulsoup4==4.9.3
 firebase-admin==5.0.0
 APScheduler==3.7.0
+types-chardet==0.1.2
+
+black==21.6b0
+isort==5.8.0
+mypy==0.902

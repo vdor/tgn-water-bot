@@ -1,6 +1,6 @@
 from typing import List
 
-from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
+from repositories.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
 
 class TelegramChatIdsRepositoryLocal(TelegramChatIdsRepositoryABC):

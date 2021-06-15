@@ -3,8 +3,9 @@ import json
 from collections.abc import Iterable as IterableABC
 from typing import Iterable, List
 
-from ..domain.water_issue import WaterIssue
-from ..packages.json_encoders import DataClassJSONEncoder
+from domain.water_issue import WaterIssue
+from packages.json_encoders import DataClassJSONEncoder
+
 from .base import IssuesRepositoryABC
 
 

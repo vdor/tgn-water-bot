@@ -4,9 +4,9 @@ from typing import List
 
 from aiogram import Bot
 
-from src.domain.water_issue import WaterIssue
-from src.issues_repository.base import IssuesRepositoryABC
-from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
+from domain.water_issue import WaterIssue
+from repositories.issues_repository.base import IssuesRepositoryABC
+from repositories.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
 from .base import IssueSenderABC
 

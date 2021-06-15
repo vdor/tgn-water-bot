@@ -1,7 +1,7 @@
 import abc
 from typing import List
 
-from src.domain.water_issue import WaterIssue
+from domain import WaterIssue
 
 
 class IssuesRepositoryABC(abc.ABC):

@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from firebase_admin.db import Reference
 
-from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
+from repositories.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
 
 class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):

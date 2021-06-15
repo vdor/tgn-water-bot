@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import AllowedUpdates, ChatMemberStatus
 
-from src.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
+from repositories.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
 logger = logging.getLogger(__name__)
 

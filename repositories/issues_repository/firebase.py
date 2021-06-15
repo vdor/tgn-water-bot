@@ -3,8 +3,8 @@ from typing import List
 
 from firebase_admin.db import Reference
 
-from src.domain.water_issue import WaterIssue
-from src.issues_repository.base import IssuesRepositoryABC
+from domain import WaterIssue
+from repositories.issues_repository.base import IssuesRepositoryABC
 
 logger = logging.getLogger(__name__)
 

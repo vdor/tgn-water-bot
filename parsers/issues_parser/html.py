@@ -3,8 +3,8 @@ from typing import List
 
 from bs4 import BeautifulSoup
 
-from src.domain.water_issue import WaterIssue
-from src.issues_html_repository.base import IssuesHTMLRepositoryABC
+from domain import WaterIssue
+from repositories.issues_html_repository.base import IssuesHTMLRepositoryABC
 
 from .base import IssuesParserABC
 

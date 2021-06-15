@@ -1,4 +1,4 @@
-from src.env import LOG_LEVEL
+from core.env import LOG_LEVEL
 
 LOGGING_CONFIG = {
     "version": 1,

@@ -1,7 +1,7 @@
 import logging
 
-from src.issues_parser.base import IssuesParserABC
-from src.issues_repository.base import IssuesRepositoryABC
+from parsers.issues_parser.base import IssuesParserABC
+from repositories.issues_repository.base import IssuesRepositoryABC
 
 logger = logging.getLogger(__name__)
 

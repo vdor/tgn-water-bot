@@ -7,20 +7,22 @@ import firebase_admin
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from firebase_admin import db
 
-from src.bots.tg import TelegramBot
-from src.env import (
+from bots.tg import TelegramBot
+from core.env import (
     FIREBASE_ADMIN_SECRET_JSON_CONTENT,
     FIREBASE_DB_URI,
     TELEGRAM_BOT_TOKEN,
     URI_WATER_ISSUES_SOURCE_HTML,
 )
-from src.issue_sender.telegram import IssueSenderTelegram
-from src.issues_collector import IssuesCollector
-from src.issues_html_repository.http import IssuesHTMLRepositoryHTTP
-from src.issues_parser.html import IssuesParserHTML
-from src.issues_repository.firebase import IssuesRepositoryFirebase
-from src.logging import LOGGING_CONFIG
-from src.telegram_chat_ids_repository.firebase import TelegramChatIdsRepositoryFirebase
+from core.logging import LOGGING_CONFIG
+from infrastructure.issue_sender.telegram import IssueSenderTelegram
+from infrastructure.issues_collector import IssuesCollector
+from parsers.issues_parser.html import IssuesParserHTML
+from repositories.issues_html_repository.http import IssuesHTMLRepositoryHTTP
+from repositories.issues_repository.firebase import IssuesRepositoryFirebase
+from repositories.telegram_chat_ids_repository.firebase import (
+    TelegramChatIdsRepositoryFirebase,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +61,7 @@ if __name__ == "__main__":
 
     try:
         logger.info("starting telegram bot")
-        loop.run_until_complete(tg_bot.start())
+        # loop.run_until_complete(tg_bot.start())
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
         logger.info("stopping")

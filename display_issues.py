@@ -19,10 +19,14 @@ if __name__ == "__main__":
             stdin=subprocess.PIPE,
             stdout=sys.stdout,
         )
+        if pager.stdin is None:
+            exit(1)
+
         for issue in issues:
 
             for line in textwrap.wrap(issue.formatted):
-                pager.stdin.write((line + "\n").encode())
+                if line is not None:
+                    pager.stdin.write((line + "\n").encode())
 
             pager.stdin.write("\n------\n".encode())
 

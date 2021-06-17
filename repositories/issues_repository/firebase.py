@@ -4,25 +4,24 @@ from typing import List
 from firebase_admin.db import Reference
 
 from domain import WaterIssue
+from firebase_facade.base import IssuesRefProviderABC
 from repositories.issues_repository.base import IssuesRepositoryABC
 
 logger = logging.getLogger(__name__)
 
 
 class IssuesRepositoryFirebase(IssuesRepositoryABC):
-    _reference: Reference
+    _ref_provider: IssuesRefProviderABC
 
-    def __init__(self, reference: Reference):
-        self._reference = reference
+    def __init__(self, ref_provider: IssuesRefProviderABC):
+        self._ref_provider = ref_provider
 
     @property
-    def _issues_ref(self):
-        return self._reference.child("issues")
+    def _ref(self) -> Reference:
+        return self._ref_provider.get_issues_ref()
 
     async def get_unsent_tg_issues(self) -> List[WaterIssue]:
-        issues = (
-            self._issues_ref.order_by_child("is_sent_telegram").equal_to(False).get()
-        )
+        issues = self._ref.order_by_child("is_sent_telegram").equal_to(False).get()
 
         result = []
 
@@ -39,11 +38,11 @@ class IssuesRepositoryFirebase(IssuesRepositoryABC):
             payload[f"{h}/is_sent_telegram"] = True
 
         if payload:
-            self._issues_ref.update(payload)
+            self._ref.update(payload)
 
     async def try_add_issues(self, issues: List[WaterIssue]):
         for issue in issues:
-            issue_ref = self._issues_ref.child(issue.hash)
+            issue_ref = self._ref.child(issue.hash)
             if issue_ref.get() is None:
                 logger.info('adding new issue with hash "{%s}"', issue.hash)
                 issue_ref.set(issue.asdict)

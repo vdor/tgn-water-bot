@@ -30,3 +30,9 @@ Send `/start` message to the bot, use it as administrator in your channel or add
 ## TODO
 
 - Create `manage.py` helper
+
+manage.py unsent-issues
+manage.py active-chats
+manage.py stats
+manage.py latest-issue
+maange.py issues

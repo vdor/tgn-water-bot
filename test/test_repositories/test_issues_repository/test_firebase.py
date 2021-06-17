@@ -23,41 +23,40 @@ async def test_firebase_get_unsent_tg_issues():
         )
     ]
 
-    reference = MagicMock()
-    reference.child().order_by_child().equal_to().get.return_value = water_issues
+    ref_provider = MagicMock()
+    ref_provider.get_issues_ref().order_by_child().equal_to().get.return_value = (
+        water_issues
+    )
 
-    repo = IssuesRepositoryFirebase(reference=reference)
+    repo = IssuesRepositoryFirebase(ref_provider=ref_provider)
     result = await repo.get_unsent_tg_issues()
     assert result == expected_issues
 
-    reference.child.assert_called_with("issues")
-    reference.child().order_by_child.assert_called_with("is_sent_telegram")
-    reference.child().order_by_child().equal_to.assert_called_with(False)
+    ref_provider.get_issues_ref().order_by_child.assert_called_with("is_sent_telegram")
+    ref_provider.get_issues_ref().order_by_child().equal_to.assert_called_with(False)
 
 
 @pytest.mark.asyncio
 async def test_firebase_mark_as_sent_tg_by_hashes():
     hashes = ["1a", "1b"]
-    reference = MagicMock()
-    repo = IssuesRepositoryFirebase(reference=reference)
+    ref_provider = MagicMock()
+    repo = IssuesRepositoryFirebase(ref_provider=ref_provider)
     await repo.mark_as_sent_tg_by_hashes(hashes)
-    reference.child.assert_called_once_with("issues")
 
     expected_payload = {
         "1a/is_sent_telegram": True,
         "1b/is_sent_telegram": True,
     }
-    reference.child().update.assert_called_once_with(expected_payload)
+    ref_provider.get_issues_ref().update.assert_called_once_with(expected_payload)
 
 
 @pytest.mark.asyncio
 async def test_firebase_mark_as_sent_tg_by_hashes_no_hashes():
     hashes = []
-    reference = MagicMock()
-    repo = IssuesRepositoryFirebase(reference=reference)
+    ref_provider = MagicMock()
+    repo = IssuesRepositoryFirebase(ref_provider=ref_provider)
     await repo.mark_as_sent_tg_by_hashes(hashes)
-    reference.child.assert_not_called()
-    reference.child().update.assert_not_called()
+    ref_provider.get_issues_ref().update.assert_not_called()
 
 
 @pytest.mark.asyncio
@@ -85,8 +84,8 @@ async def test_firebase_try_add_issues():
     def get_by_hash(h: str):
         return issue_refs[h]
 
-    reference = MagicMock()
-    reference.child().child.side_effect = get_by_hash
-    repo = IssuesRepositoryFirebase(reference=reference)
+    ref_provider = MagicMock()
+    ref_provider.get_issues_ref().child.side_effect = get_by_hash
+    repo = IssuesRepositoryFirebase(ref_provider=ref_provider)
     await repo.try_add_issues(issues)
     issue_refs[issues[1].hash].set.assert_called_once_with(issues[1].asdict)

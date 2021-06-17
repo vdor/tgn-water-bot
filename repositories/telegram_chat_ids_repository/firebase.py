@@ -1,26 +1,23 @@
-from typing import List, Optional
+from typing import List
 
 from firebase_admin.db import Reference
 
+from firebase_facade.base import TelegramChatsRefProvider
 from repositories.telegram_chat_ids_repository.base import TelegramChatIdsRepositoryABC
 
 
 class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
-    _reference: Reference
+    _ref_provider: TelegramChatsRefProvider
 
-    def __init__(self, reference: Reference):
-        self._reference = reference
-
-    @property
-    def _telegram_ref(self):
-        return self._reference.child("telegram")
+    def __init__(self, ref_provider: TelegramChatsRefProvider):
+        self._ref_provider = ref_provider
 
     @property
-    def _active_chat_ids_ref(self):
-        return self._telegram_ref.child("active_chat_ids")
+    def _ref(self) -> Reference:
+        return self._ref_provider.get_telegram_chat_ids_ref()
 
     async def get_all_chats(self) -> List[str]:
-        ids = self._active_chat_ids_ref.order_by_child("active").equal_to(True).get()
+        ids = self._ref.order_by_child("active").equal_to(True).get()
 
         if ids is None:
             return []
@@ -28,13 +25,13 @@ class TelegramChatIdsRepositoryFirebase(TelegramChatIdsRepositoryABC):
         return ids  # noqa
 
     async def add_chat(self, chat_id: str):
-        self._active_chat_ids_ref.child(chat_id).set({"active": True})
+        self._ref.child(chat_id).set({"active": True})
 
     async def remove_chat(self, chat_id: str):
-        self._active_chat_ids_ref.child(chat_id).set({"active": False})
+        self._ref.child(chat_id).set({"active": False})
 
     async def is_chat_id_subscribed(self, chat_id: str) -> bool:
-        data = self._active_chat_ids_ref.child(chat_id).get()
+        data = self._ref.child(chat_id).get()
 
         if isinstance(data, dict):
             return data.get("active", False)

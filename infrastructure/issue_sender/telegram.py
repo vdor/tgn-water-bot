@@ -57,4 +57,6 @@ class IssueSenderTelegram(IssueSenderABC):
                 )
 
     async def _send_issue_to_chat(self, chat_id: str, issue: WaterIssue):
-        await self._bot.send_message(chat_id, issue.formatted)
+        await self._bot.send_message(
+            chat_id, issue.formatted, disable_notification=not issue.is_important
+        )

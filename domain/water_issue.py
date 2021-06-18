@@ -32,3 +32,7 @@ class WaterIssue:
     @property
     def is_empty(self) -> bool:
         return len(self.content.strip()) == 0
+
+    @property
+    def is_important(self):
+        return "пониженным давлением" not in self.content.lower()

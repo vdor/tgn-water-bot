@@ -53,3 +53,11 @@ def test_water_issue_asdict():
 def test_water_issue_empty():
     wi = WaterIssue(date_text="15.06.2021", content=" ", is_sent_telegram=True)
     assert wi.is_empty is True
+
+
+def test_water_issue_is_important():
+    wi = WaterIssue(date_text="15.06.2021", content="с Пониженным давлением")
+    assert wi.is_important is False
+
+    wi = WaterIssue(date_text="15.06.2021", content="с давлением")
+    assert wi.is_important is True

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from aiogram import Dispatcher, types
@@ -20,18 +21,23 @@ class TelegramBot:
         self._chats_repo = chats_repo
         self._relax = relax
 
-    async def start(self):
+    async def check_updates(self):
         try:
             self._dispatcher.register_my_chat_member_handler(self.chat_member_handler)
             self._dispatcher.register_message_handler(
                 self.start_message_handler, commands="start"
             )
-            await self._dispatcher.start_polling(
+            result = self._dispatcher.start_polling(
                 allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
                 relax=self._relax,
             )
+            await asyncio.gather(result, self.stop_polling())
         finally:
             await self._dispatcher.bot.close()
+
+    async def stop_polling(self):
+        await asyncio.sleep(0)
+        self._dispatcher.stop_polling()
 
     async def chat_member_handler(self, event: types.ChatMemberUpdated):
         new_status = event.new_chat_member.status

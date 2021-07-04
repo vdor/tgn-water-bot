@@ -51,13 +51,7 @@ if __name__ == "__main__":
 
     scheduler.add_job(issues_collector.collect, "interval", minutes=30)
     scheduler.add_job(issue_sender.send, "interval", minutes=32)
+    scheduler.add_job(tg_bot.check_updates, "interval", seconds=5)
 
     logger.info("starting scheduler")
     scheduler.start()
-
-    try:
-        logger.info("starting telegram bot")
-        loop.run_until_complete(tg_bot.start())
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
-        logger.info("stopping")

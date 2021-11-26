@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from domain import WaterIssue
-from infrastructure.issue_sender.telegram import IssueSenderTelegram
+from src.domain import WaterIssue
+from src.infrastructure.issue_sender.telegram import IssueSenderTelegram
 
 
 @pytest.mark.asyncio

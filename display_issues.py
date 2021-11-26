@@ -3,9 +3,9 @@ import subprocess
 import sys
 import textwrap
 
-from core.env import URI_WATER_ISSUES_SOURCE_HTML
-from parsers.issues_parser.html import IssuesParserHTML
-from repositories.issues_html_repository.http import IssuesHTMLRepositoryHTTP
+from src.core import URI_WATER_ISSUES_SOURCE_HTML
+from src.parsers.issues_parser.html import IssuesParserHTML
+from src.repositories import IssuesHTMLRepositoryHTTP
 
 if __name__ == "__main__":
     issues_html_repo = IssuesHTMLRepositoryHTTP(uri=URI_WATER_ISSUES_SOURCE_HTML)

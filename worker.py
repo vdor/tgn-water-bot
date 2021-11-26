@@ -1,25 +1,24 @@
-import asyncio
 import logging
 from logging import config as logging_config
 
 from aiogram import Bot, Dispatcher
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 
-from bots.tg import TelegramBot
-from core.env import (
+from src.bots import TelegramBot
+from src.core import (
     FIREBASE_ADMIN_SECRET_JSON_CONTENT,
     FIREBASE_DB_URI,
     TELEGRAM_BOT_TOKEN,
     URI_WATER_ISSUES_SOURCE_HTML,
 )
-from core.logging import LOGGING_CONFIG
-from firebase_facade.facade import FirebaseFacade
-from infrastructure.issue_sender.telegram import IssueSenderTelegram
-from infrastructure.issues_collector import IssuesCollector
-from parsers.issues_parser.html import IssuesParserHTML
-from repositories.issues_html_repository.http import IssuesHTMLRepositoryHTTP
-from repositories.issues_repository.firebase import IssuesRepositoryFirebase
-from repositories.telegram_chat_ids_repository.firebase import (
+from src.core.logging import LOGGING_CONFIG
+from src.firebase_facade.facade import FirebaseFacade
+from src.infrastructure import IssueSenderTelegram
+from src.infrastructure import IssuesCollector
+from src.parsers.issues_parser.html import IssuesParserHTML
+from src.repositories import IssuesHTMLRepositoryHTTP
+from src.repositories import IssuesRepositoryFirebase
+from src.repositories.telegram_chat_ids_repository.firebase import (
     TelegramChatIdsRepositoryFirebase,
 )
 
@@ -46,8 +45,7 @@ if __name__ == "__main__":
         dispatcher=Dispatcher(bot=Bot(TELEGRAM_BOT_TOKEN)), chats_repo=chats_repo
     )
 
-    loop = asyncio.get_event_loop()
-    scheduler = AsyncIOScheduler({"event_loop": loop})
+    scheduler = BlockingScheduler()
 
     scheduler.add_job(issues_collector.collect, "interval", minutes=30)
     scheduler.add_job(issue_sender.send, "interval", minutes=32)
@@ -55,3 +53,4 @@ if __name__ == "__main__":
 
     logger.info("starting scheduler")
     scheduler.start()
+

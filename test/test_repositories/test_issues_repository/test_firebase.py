@@ -1,10 +1,10 @@
 from typing import Dict
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock
 
 import pytest
 
-from domain import WaterIssue
-from repositories.issues_repository.firebase import IssuesRepositoryFirebase
+from src.domain import WaterIssue
+from src.repositories.issues_repository.firebase import IssuesRepositoryFirebase
 
 
 @pytest.mark.asyncio

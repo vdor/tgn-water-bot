@@ -1,8 +1,8 @@
-from unittest.mock import AsyncMock, MagicMock, Mock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from repositories.issues_html_repository.http import IssuesHTMLRepositoryHTTP
+from src.repositories.issues_html_repository.http import IssuesHTMLRepositoryHTTP
 
 
 @pytest.mark.asyncio

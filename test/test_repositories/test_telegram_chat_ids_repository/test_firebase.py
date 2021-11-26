@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from repositories.telegram_chat_ids_repository.firebase import (
+from src.repositories.telegram_chat_ids_repository.firebase import (
     TelegramChatIdsRepositoryFirebase,
 )
 

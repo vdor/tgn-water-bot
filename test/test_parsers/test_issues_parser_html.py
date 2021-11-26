@@ -2,7 +2,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from parsers.issues_parser.html import IssuesParserHTML
+from src.parsers.issues_parser.html import IssuesParserHTML
 
 
 @pytest.mark.asyncio

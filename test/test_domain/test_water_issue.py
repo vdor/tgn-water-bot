@@ -1,4 +1,4 @@
-from domain.water_issue import WaterIssue
+from src.domain.water_issue import WaterIssue
 
 
 def test_water_issue_create_from_dict():

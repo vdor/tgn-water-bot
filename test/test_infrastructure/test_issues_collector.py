@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from domain import WaterIssue
-from infrastructure.issues_collector import IssuesCollector
+from src.domain import WaterIssue
+from src.infrastructure.issues_collector import IssuesCollector
 
 
 @pytest.mark.asyncio

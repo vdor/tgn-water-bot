@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock
 import pytest
 from aiogram.types import AllowedUpdates, ChatMemberStatus
 
-from bots.tg import TelegramBot
+from src.bots.tg import TelegramBot
 
 
 @pytest.fixture

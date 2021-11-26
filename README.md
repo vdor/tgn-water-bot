@@ -17,6 +17,10 @@ Send `/start` message to the bot, use it as administrator in your channel or add
 - create venv `virtual venv -p $(which python3.9)`
 - activate venv `source venv/bin/activate`
 
+# Tests
+
+Run tests by `$ pytest`
+
 ### Display issues to the console
 
 `python3 display_issues.py`

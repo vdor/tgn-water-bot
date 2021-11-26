@@ -26,7 +26,7 @@ async def test_tg_start(dispatcher: Mock, chats_repo: Mock):
     relax_time = 10
 
     bot = TelegramBot(dispatcher=dispatcher, chats_repo=chats_repo, relax=relax_time)
-    await bot.start()
+    await bot.check_updates()
 
     dispatcher.register_my_chat_member_handler.assert_called_once_with(
         bot.chat_member_handler

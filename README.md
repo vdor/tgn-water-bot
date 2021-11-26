@@ -27,6 +27,10 @@ Send `/start` message to the bot, use it as administrator in your channel or add
 - fill in `.env`
 - `python3 worker.py`
 
+# Python Version
+
+3.9+
+
 ## TODO
 
 - Create `manage.py` helper

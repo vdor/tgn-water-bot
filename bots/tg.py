@@ -27,9 +27,11 @@ class TelegramBot:
             self._dispatcher.register_message_handler(
                 self.start_message_handler, commands="start"
             )
-            result = self._dispatcher.start_polling(
-                allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
-                relax=self._relax,
+            result = asyncio.create_task(
+                self._dispatcher.start_polling(
+                    allowed_updates=AllowedUpdates.MESSAGE + AllowedUpdates.MY_CHAT_MEMBER,
+                    relax=self._relax,
+                ),
             )
             await asyncio.gather(result, self.stop_polling())
         finally:

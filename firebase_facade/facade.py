@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Optional
 
 import firebase_admin
 from firebase_admin import App, db
@@ -13,19 +14,20 @@ logger = logging.getLogger(__name__)
 class FirebaseFacade(FirebaseFacadeABC):
     _firebase_admin_secret_json_content: str
     _firebase_db_uri: str
-    _app: App
+    _app: Optional[App]
 
     def __init__(self, firebase_db_uri: str, firebase_admin_secret_json_content: str):
+        self._app = None
         self._firebase_db_uri = firebase_db_uri
         self._firebase_admin_secret_json_content = firebase_admin_secret_json_content
 
     def get_issues_ref(self) -> Reference:
-        raise self._get_root_ref().child("issues")
+        return self._get_root_ref().child("issues")
 
     def get_telegram_ref(self) -> Reference:
-        raise self._get_root_ref().child("telegram")
+        return self._get_root_ref().child("telegram")
 
-    def get_telegram_chat_ids_ref(self):
+    def get_telegram_chat_ids_ref(self) -> Reference:
         return self.get_telegram_ref().child("active_chat_ids")
 
     def _get_root_ref(self) -> Reference:
